@@ -1,7 +1,7 @@
 import React from 'react';
 import './App.css';
 import LoginPage from './Pages/Login/LoginPage';
-import GeneraePdf from './Pages/GeneratorPage/GeneraePdf';
+import GeneraePdf from './Pages/GeneratorPage/PDFGenerator';
 
 function App() {
   return (
