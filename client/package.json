@@ -17,6 +17,7 @@
     "html2canvas": "^1.4.1",
     "jspdf": "^2.5.1",
     "jspdf-autotable": "^3.5.28",
+    "openai": "^3.2.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-pdf": "^6.2.2",
@@ -52,6 +53,7 @@
   "devDependencies": {
     "@types/aria-query": "^5.0.1",
     "@types/file-saver": "^2.0.5",
-    "@types/styled-components": "^5.1.26"
+    "@types/styled-components": "^5.1.26",
+    "prettier": "^2.8.8"
   }
 }
