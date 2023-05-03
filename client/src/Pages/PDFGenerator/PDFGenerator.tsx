@@ -2,6 +2,37 @@ import React, { useState } from 'react';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import usePDFGenerator from './usePDFGenerator';
+import styled from 'styled-components';
+import Spinner from '../../Common/Sppiner';
+
+
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+`;
+
+const Input = styled.input`
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  width: 100%;
+  font-size: 16px;
+`;
+
+const Button = styled.button`
+  padding: 10px 20px;
+  border: none;
+  background-color: #007bff;
+  color: #fff;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  margin-top: 10px;
+`;
 
 function PDFGenerator() {
   const [firstName, setFirstName] = useState('Elad');
@@ -82,22 +113,22 @@ function PDFGenerator() {
   }
 
   return (
-    <>
-    {loading ?  <div>Loading...</div> :
+    <Container>
+    {loading ?  <Spinner backgroundColor="#ccc" /> :
     <div>
       {pdfUrl ? <button onClick={() => window.open(pdfUrl)}>Show me the resume 📝</button> :
       <> 
-      <input type="text" placeholder="First Name" value={firstName} onChange={e => setFirstName(e.target.value)} />
-      <input type="text" placeholder="Last Name" value={lastName} onChange={e => setLastName(e.target.value)} />
-      <input type="text" placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} />
-      <input type="text" placeholder="Phone" value={phone} onChange={e => setPhone(e.target.value)} />
-      <input type="text" placeholder="Job Type" value={jobType} onChange={e => setjobType(e.target.value)} />
-      <button onClick={generatePdf}>Generate PDF</button>
+      <Input type="text" placeholder="First Name" value={firstName} onChange={e => setFirstName(e.target.value)} />
+      <Input type="text" placeholder="Last Name" value={lastName} onChange={e => setLastName(e.target.value)} />
+      <Input type="text" placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} />
+      <Input type="text" placeholder="Phone" value={phone} onChange={e => setPhone(e.target.value)} />
+      <Input type="text" placeholder="Job Type" value={jobType} onChange={e => setjobType(e.target.value)} />
+      <Button onClick={generatePdf}>Generate PDF</Button>
       </>
     }
     </div>
   }
-  </>
+  </Container>
   );
 }
 

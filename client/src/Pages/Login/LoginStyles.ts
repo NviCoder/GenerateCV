@@ -17,7 +17,6 @@ export const Container = styled.div`
   align-items: center;
   justify-content: center;
   height: 100vh;
-  background: linear-gradient(to right, #4b6cb7, #182848);
   position: relative;
 `;
 
