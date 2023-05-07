@@ -40,7 +40,7 @@ function PDFGenerator() {
   const [email, setEmail] = useState('asdasd@asdasd.com');
   const [phone, setPhone] = useState('05252212335');
   const [jobType, setjobType] = useState("electric engineer student");
-  const [pdfUrl, setPdfUrl] = useState(''); 
+  const [cvText, setCvText] = useState('');
   const [loading, setLoading] = useState(false);
 
   const {getCvContent} = usePDFGenerator();
@@ -51,17 +51,16 @@ function PDFGenerator() {
     let response;
     try {
       response = await getCvContent(firstName, lastName, email, phone, jobType);
-      console.log("response", response);
+      setCvText(response || "");
     } catch (error) {
       console.error(error);
+    } finally {
       setLoading(false);
-      return
     }
-    
-  
-    const doc = new jsPDF();
+  }
 
-   
+  const showPdf = () => {
+    const doc = new jsPDF();   
     // Add header section
     doc.setFontSize(16);
     doc.setFont('bold');
@@ -84,7 +83,7 @@ function PDFGenerator() {
     doc.setFontSize(14);
     doc.setTextColor(0, 0, 0);
     doc.setFont('bold');
-    doc.text(response || "No data?", 20, 80);
+    doc.text(cvText || "No data?", 20, 80);
     
     // // Add education details
     // doc.setFontSize(12);
@@ -108,15 +107,22 @@ function PDFGenerator() {
     const pdfData = doc.output();
     const pdfBlob = new Blob([pdfData], { type: 'application/pdf' });
     const currentpdfUrl = URL.createObjectURL(pdfBlob);
-    setPdfUrl(currentpdfUrl);
-    setLoading(false);
+    window.open(currentpdfUrl)
   }
+
 
   return (
     <Container>
     {loading ?  <Spinner backgroundColor="#ccc" /> :
     <div>
-      {pdfUrl ? <button onClick={() => window.open(pdfUrl)}>Show me the resume 📝</button> :
+      {/* {pdfUrl ? 
+      <button onClick={() => window.open(pdfUrl)}>Show me the resume 📝</button> : */}
+    { cvText ? 
+    <div>
+      <textarea style={{width: "1038px", height: "576px"}} id="text-area" value={cvText} onChange={e => setCvText(e.target.value)} />
+      <br/>
+      <button onClick={showPdf}>Show me the resume 📝</button>
+    </div> :
       <> 
       <Input type="text" placeholder="First Name" value={firstName} onChange={e => setFirstName(e.target.value)} />
       <Input type="text" placeholder="Last Name" value={lastName} onChange={e => setLastName(e.target.value)} />
