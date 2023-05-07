@@ -113,7 +113,7 @@ function PDFGenerator() {
 
   return (
     <Container>
-    {loading ?  <Spinner backgroundColor="#ccc" /> :
+    {loading &&  <Spinner backgroundColor="#ccc" />}
     <div>
       {/* {pdfUrl ? 
       <button onClick={() => window.open(pdfUrl)}>Show me the resume 📝</button> : */}
@@ -133,7 +133,6 @@ function PDFGenerator() {
       </>
     }
     </div>
-  }
   </Container>
   );
 }

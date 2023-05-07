@@ -17,7 +17,7 @@ const SpinnerWrapper = styled.div<{ backgroundColor?: string }>`
   display: flex;
   align-items: center;
   justify-content: center;
-  opacity: ${(props) => (props.backgroundColor ? '1' : '0.8')};
+  opacity: 0.8};
 `;
 
 const spin = keyframes`
@@ -30,16 +30,13 @@ const SpinnerContainer = styled.div<{ size?: number; color?: string }>`
   border-radius: 50%;
   width: ${(props) => props.size || 40}px;
   height: ${(props) => props.size || 40}px;
-  border: 3px solid ${(props) => props.color || '#fff'};
-  border-top-color: transparent;
+  border: 3px solid transparent;
+  border-image: linear-gradient(to right, #4b6cb7, #182848) 1;
   animation: ${spin} 1s linear infinite;
 `;
 
-const Spinner: React.FC<SpinnerProps> = ({
-  size,
-  color,
-  backgroundColor,
-}: SpinnerProps) => (
+
+const Spinner: React.FC<SpinnerProps> = ({size, color,backgroundColor,}: SpinnerProps) => (
   <SpinnerWrapper backgroundColor={backgroundColor}>
     <SpinnerContainer size={size} color={color} />
   </SpinnerWrapper>
