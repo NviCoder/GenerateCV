@@ -34,6 +34,37 @@ const Button = styled.button`
   margin-top: 10px;
 `;
 
+const TextArea = styled.textarea`
+  width: 1038px;
+  height: 576px;
+  padding: 16px;
+  font-size: 18px;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  outline: none;
+  resize: none;
+  background-color: #f8f8f8;
+
+  &:hover,
+  &:focus {
+    border-color: #4b6cb7;
+  }
+
+  &::-webkit-scrollbar {
+    width: 12px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: #f8f8f8;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: #4b6cb7;
+    border-radius: 6px;
+    border: 3px solid #f8f8f8;
+  }
+`;
+
 function PDFGenerator() {
   const [firstName, setFirstName] = useState('Elad');
   const [lastName, setLastName] = useState('Nevee');
@@ -119,7 +150,7 @@ function PDFGenerator() {
       <button onClick={() => window.open(pdfUrl)}>Show me the resume 📝</button> : */}
     { cvText ? 
     <div>
-      <textarea style={{width: "1038px", height: "576px"}} id="text-area" value={cvText} onChange={e => setCvText(e.target.value)} />
+      <TextArea id="text-area" value={cvText}onChange={(e) => setCvText(e.target.value)}/>
       <br/>
       <button onClick={showPdf}>Show me the resume 📝</button>
     </div> :
