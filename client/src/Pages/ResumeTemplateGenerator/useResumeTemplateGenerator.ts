@@ -22,6 +22,7 @@ const openAi = new OpenAIApi(
     address: '123 Main Street, Anytown, USA'
   };
 
+  remult.apiClient.url = "https://nvicoder-verbose-goldfish-rp7977xj5r7cwjqx-3002.preview.app.github.dev/api"
   const resumesRepo = remult.repo(Resume);
 
 
@@ -37,6 +38,15 @@ const usePDFGenerator = () => {
         playWithRemult();
       }, []);
       
+      async function playWithRemult() {
+        // add a new product to the backend database
+        await resumesRepo.insert({ title: "walla"});
+    
+        // fetch products from backend database
+        const products = await resumesRepo.find();
+        console.log(products);
+    }
+
       const getCvContent = async (personResumeDetails: PersonResumeDetails) => {
         const {firstName, lastName, email, phone, jobType, age, address} = personResumeDetails;
         const request = `Hello, can you please genereate resume based on the following details? 
@@ -54,15 +64,6 @@ const usePDFGenerator = () => {
             })
           return response?.data?.choices[0]?.message?.content;
       }
-      
-      async function playWithRemult() {
-        // add a new product to the backend database
-        await resumesRepo.insert({ title: "walla"});
-    
-        // fetch products from backend database
-        const products = await resumesRepo.find();
-        console.log(products);
-    }
     
       const getResumeTemplateContent = async () => {
         setLoading(true);
