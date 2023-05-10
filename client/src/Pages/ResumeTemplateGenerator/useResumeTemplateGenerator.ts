@@ -1,8 +1,10 @@
 import { Configuration, OpenAIApi } from "openai"
 import { PersonResumeDetails } from "./ResumeTemplateGenerator.types"
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
+import { Resume } from "../../shared/Resume";
+import { remult } from "remult";
 
 const openAi = new OpenAIApi(
     new Configuration({
@@ -20,12 +22,20 @@ const openAi = new OpenAIApi(
     address: '123 Main Street, Anytown, USA'
   };
 
+  const resumesRepo = remult.repo(Resume);
+
+
+
 const usePDFGenerator = () => {
 
       const [personResumeDetails, setPersonResumeDetails] = useState<PersonResumeDetails>(initialDetails);
       const [ResumeText, setResumeText] = useState('');
       const [loading, setLoading] = useState(false);
       const [isTextAreaDisabled, setIsTextAreaDisabled] = useState(true);
+
+      useEffect(() => {
+        playWithRemult();
+      }, []);
       
       const getCvContent = async (personResumeDetails: PersonResumeDetails) => {
         const {firstName, lastName, email, phone, jobType, age, address} = personResumeDetails;
@@ -44,7 +54,15 @@ const usePDFGenerator = () => {
             })
           return response?.data?.choices[0]?.message?.content;
       }
-
+      
+      async function playWithRemult() {
+        // add a new product to the backend database
+        await resumesRepo.insert({ title: "walla"});
+    
+        // fetch products from backend database
+        const products = await resumesRepo.find();
+        console.log(products);
+    }
     
       const getResumeTemplateContent = async () => {
         setLoading(true);
