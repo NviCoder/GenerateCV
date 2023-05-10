@@ -1,6 +1,6 @@
 import { Configuration, OpenAIApi } from "openai"
 import { PersonResumeDetails } from "./ResumeTemplateGenerator.types"
-import React, { useState } from 'react';
+import { useState } from 'react';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 
@@ -88,7 +88,7 @@ const usePDFGenerator = () => {
         window.open(currentpdfUrl)
       }
 
-      return {setPersonResumeDetails, setIsTextAreaDisabled, setResumeText, getCvContent, generateResumeTemplate, showPdf,
+      return {setPersonResumeDetails, setIsTextAreaDisabled, setResumeText, generateResumeTemplate, showPdf,
          personResumeDetails, ResumeText, loading, isTextAreaDisabled};
 }
 

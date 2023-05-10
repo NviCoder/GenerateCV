@@ -4,7 +4,7 @@ import { Container, Input, TextArea, Button } from "./ResumeTemplateGenerator.st
 
 
 function ResumeTemplateGenerator() {
-  const {setPersonResumeDetails, setIsTextAreaDisabled, setResumeText, getCvContent, generateResumeTemplate, showPdf,
+  const {setPersonResumeDetails, setIsTextAreaDisabled, setResumeText, generateResumeTemplate, showPdf,
      personResumeDetails, ResumeText, loading, isTextAreaDisabled} = usePDFGenerator();
  
 
