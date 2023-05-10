@@ -10,7 +10,7 @@ import {
   DocumentImg,
   SSOButton,
   GoogleButtonIcon
-} from "./LoginStyles";
+} from "./Login.styles";
 
 const IMAGE_SOURCE = "https://cdn-icons-png.flaticon.com/512/3135/3135686.png";
 

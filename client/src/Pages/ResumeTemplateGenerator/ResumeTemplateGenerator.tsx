@@ -1,76 +1,22 @@
-import React, { useState } from 'react';
-import jsPDF from 'jspdf';
-import 'jspdf-autotable';
 import usePDFGenerator from './useResumeTemplateGenerator';
 import Spinner from '../../Common/Sppiner';
-import { Container, Input, TextArea, Button } from "./ResumeTemplateGeneratorStyles";
+import { Container, Input, TextArea, Button } from "./ResumeTemplateGenerator.styles";
 
 
-function PDFGenerator() {
-  const [firstName, setFirstName] = useState('Elad');
-  const [lastName, setLastName] = useState('Nevee');
-  const [email, setEmail] = useState('asdasd@asdasd.com');
-  const [phone, setPhone] = useState('05252212335');
-  const [jobType, setjobType] = useState("electric engineer student");
-  const [cvText, setResumeText] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [isTextAreaDisabled, setIsTextAreaDisabled] = useState(true);
-
-
-  const {getCvContent} = usePDFGenerator();
-
-  const getResumeTemplateContent = async () => {
-    setLoading(true);
-    let response;
-    try {
-      response = await getCvContent(firstName, lastName, email, phone, jobType);
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setLoading(false);
-    }
-    return response || "Error was occured";
-  }
-
-  const generateResumeTemplate = async () => {
-    const response = await getResumeTemplateContent();
-    setResumeText(response);
-  }
-  
-  const showPdf = () => {
-    const doc = new jsPDF();   
-    // Add header section
-    doc.setFontSize(16);
-    doc.setFont('bold');
-    doc.text(`${firstName} ${lastName}'s Resume`, 20, 20);
-
-    // Add divider line
-    doc.setDrawColor(100, 100, 100);
-    doc.setLineWidth(0.5);
-    doc.line(20, 70, 190, 70);
-    
-    // // Add education section
-    doc.setFontSize(14);
-    doc.setTextColor(0, 0, 0);
-    doc.setFont('bold');
-    doc.text(cvText || "No data?", 20, 80);
-    
-    const pdfData = doc.output();
-    const pdfBlob = new Blob([pdfData], { type: 'application/pdf' });
-    const currentpdfUrl = URL.createObjectURL(pdfBlob);
-    window.open(currentpdfUrl)
-  }
-
+function ResumeTemplateGenerator() {
+  const {setPersonResumeDetails, setIsTextAreaDisabled, setResumeText, getCvContent, generateResumeTemplate, showPdf,
+     personResumeDetails, ResumeText, loading, isTextAreaDisabled} = usePDFGenerator();
+ 
 
   return (
     <>
     {loading && <Spinner backgroundColor="#ccc" />}
     <Container>
-    { cvText ? 
+    { ResumeText ? 
     <>
-      <h1>{`${firstName} ${lastName}'s Resume template`}</h1>
+      <h1>{`${personResumeDetails.firstName} ${personResumeDetails.lastName}'s Resume template`}</h1>
       <Button onClick={() => setIsTextAreaDisabled((isDisabled) => !isDisabled)}>{`${isTextAreaDisabled ? "Edit"  :"Finish editing"}✍️`}</Button>
-      <TextArea id="text-area" value={cvText} onChange={(e) => setResumeText(e.target.value)} disabled={isTextAreaDisabled}/>
+      <TextArea id="text-area" value={ResumeText} onChange={(e) => setResumeText(e.target.value)} disabled={isTextAreaDisabled}/>
       <br/>
       <Button onClick={showPdf}>Show me the resume 📝</Button>
       <Button onClick={generateResumeTemplate}>Refresh template 🔄</Button>
@@ -78,11 +24,13 @@ function PDFGenerator() {
     </> :
       <>
       <h1>Enter the following details about yourself</h1>
-      <Input type="text" placeholder="First Name" value={firstName} onChange={e => setFirstName(e.target.value)} />
-      <Input type="text" placeholder="Last Name" value={lastName} onChange={e => setLastName(e.target.value)} />
-      <Input type="text" placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} />
-      <Input type="text" placeholder="Phone" value={phone} onChange={e => setPhone(e.target.value)} />
-      <Input type="text" placeholder="Job Type" value={jobType} onChange={e => setjobType(e.target.value)} />
+      <Input type="text" placeholder="First Name" value={personResumeDetails.firstName} onChange={e => setPersonResumeDetails({...personResumeDetails, firstName: e.target.value})} />
+      <Input type="text" placeholder="Last Name" value={personResumeDetails.lastName} onChange={e => setPersonResumeDetails({...personResumeDetails, lastName: e.target.value})} />
+      <Input type="text" placeholder="Email" value={personResumeDetails.email} onChange={e => setPersonResumeDetails({...personResumeDetails, email: e.target.value})} />
+      <Input type="text" placeholder="Phone" value={personResumeDetails.phone} onChange={e => setPersonResumeDetails({...personResumeDetails, phone: e.target.value})} />
+      <Input type="text" placeholder="Age" value={personResumeDetails.age} onChange={e => setPersonResumeDetails({...personResumeDetails, age: e.target.value})} />
+      <Input type="text" placeholder="Address" value={personResumeDetails.address} onChange={e => setPersonResumeDetails({...personResumeDetails, address: e.target.value})} />
+      <Input type="text" placeholder="Job Type" value={personResumeDetails.jobType} onChange={e => setPersonResumeDetails({...personResumeDetails, jobType: e.target.value})} />
       <Button onClick={generateResumeTemplate}>Generate Resume template 📝</Button>
       </>
     }
@@ -91,4 +39,4 @@ function PDFGenerator() {
   );
 }
 
-export default PDFGenerator;
+export default ResumeTemplateGenerator;
