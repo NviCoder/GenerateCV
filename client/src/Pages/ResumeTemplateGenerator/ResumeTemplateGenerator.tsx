@@ -3,7 +3,7 @@ import Spinner from '../../Common/Sppiner';
 import { Container, Input, TextArea, Button } from "./ResumeTemplateGenerator.styles";
 import useRemult from '../../Common/useRemult';
 import { getFullName } from '../../Common/commonUtils';
-import { ToastContainer } from 'react-toastify';
+import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 
@@ -11,11 +11,11 @@ import 'react-toastify/dist/ReactToastify.css';
 function ResumeTemplateGenerator() {
   const {setPersonResumeDetails, setIsTextAreaDisabled, setResumeText, generateResumeTemplate, showPdf,
      personResumeDetails, resumeText, loading, isTextAreaDisabled} = usePDFGenerator();
-  const {addResume} = useRemult();
+  const {addResume, isRemultLoading} = useRemult();
 
   return (
     <>
-    {loading && <Spinner backgroundColor="#ccc" />}
+    {(loading || isRemultLoading) && <Spinner backgroundColor="#ccc" />}
     <Container>
     { resumeText ? 
     <>
@@ -40,7 +40,7 @@ function ResumeTemplateGenerator() {
       <Button onClick={generateResumeTemplate}>Generate Resume template 📝</Button>
       </>
     }
-    <ToastContainer />
+    <ToastContainer position={toast.POSITION.BOTTOM_LEFT}/>
   </Container>
   </>
   );
