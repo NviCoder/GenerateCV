@@ -5,7 +5,7 @@ import { Entity, Fields } from "remult"
 })
 
 export class Resume {
-  @Fields.autoIncrement()
+  @Fields.cuid()
   id = 0
 
   @Fields.createdAt()
@@ -13,4 +13,7 @@ export class Resume {
 
   @Fields.string()
   title = ""
+
+  @Fields.string()
+  content = ""
 }

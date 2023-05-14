@@ -1,26 +1,29 @@
 import usePDFGenerator from './useResumeTemplateGenerator';
 import Spinner from '../../Common/Sppiner';
 import { Container, Input, TextArea, Button } from "./ResumeTemplateGenerator.styles";
+import useRemult from '../../Common/useRemult';
+import { getFullName } from '../../Common/commonUtils';
 
 
 function ResumeTemplateGenerator() {
   const {setPersonResumeDetails, setIsTextAreaDisabled, setResumeText, generateResumeTemplate, showPdf,
-     personResumeDetails, ResumeText, loading, isTextAreaDisabled} = usePDFGenerator();
- 
+     personResumeDetails, resumeText, loading, isTextAreaDisabled} = usePDFGenerator();
+  const {addResume} = useRemult();
 
   return (
     <>
     {loading && <Spinner backgroundColor="#ccc" />}
     <Container>
-    { ResumeText ? 
+    { resumeText ? 
     <>
       <h1>{`${personResumeDetails.firstName} ${personResumeDetails.lastName}'s Resume template`}</h1>
       <Button onClick={() => setIsTextAreaDisabled((isDisabled) => !isDisabled)}>{`${isTextAreaDisabled ? "Edit"  :"Finish editing"}✍️`}</Button>
-      <TextArea id="text-area" value={ResumeText} onChange={(e) => setResumeText(e.target.value)} disabled={isTextAreaDisabled}/>
+      <TextArea id="text-area" value={resumeText} onChange={(e) => setResumeText(e.target.value)} disabled={isTextAreaDisabled}/>
       <br/>
       <Button onClick={showPdf}>Show me the resume 📝</Button>
       <Button onClick={generateResumeTemplate}>Refresh template 🔄</Button>
       <Button onClick={() => setResumeText('')}>Enter new details 👨‍🎓</Button>
+      <Button onClick={() => addResume(getFullName(personResumeDetails.firstName, personResumeDetails.lastName), resumeText)}>Save Resume 💾</Button>
     </> :
       <>
       <h1>Enter the following details about yourself</h1>
