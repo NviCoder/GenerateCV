@@ -3,6 +3,9 @@ import Spinner from '../../Common/Sppiner';
 import { Container, Input, TextArea, Button } from "./ResumeTemplateGenerator.styles";
 import useRemult from '../../Common/useRemult';
 import { getFullName } from '../../Common/commonUtils';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 
 function ResumeTemplateGenerator() {
@@ -37,6 +40,7 @@ function ResumeTemplateGenerator() {
       <Button onClick={generateResumeTemplate}>Generate Resume template 📝</Button>
       </>
     }
+    <ToastContainer />
   </Container>
   </>
   );
