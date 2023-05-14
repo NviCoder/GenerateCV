@@ -37,8 +37,7 @@ const usePDFGenerator = () => {
         jobType: ${jobType},
         age: ${age},
         address: ${address},`
-        console.log(request);
-          
+        
           const response = await openAi.createChatCompletion({
               model: "gpt-3.5-turbo",
               messages: [{ role: "user", content: request }]

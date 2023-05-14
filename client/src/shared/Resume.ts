@@ -6,7 +6,7 @@ import { Entity, Fields } from "remult"
 
 export class Resume {
   @Fields.cuid()
-  id = 0
+  id = crypto.randomUUID();
 
   @Fields.createdAt()
   creationTime = new Date()
