@@ -17,7 +17,7 @@ const SpinnerWrapper = styled.div<{ backgroundColor?: string }>`
   display: flex;
   align-items: center;
   justify-content: center;
-  opacity: 0.8};
+  opacity: 0.8;
 `;
 
 const spin = keyframes`

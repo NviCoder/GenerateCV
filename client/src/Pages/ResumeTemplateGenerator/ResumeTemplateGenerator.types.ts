@@ -6,5 +6,4 @@ export interface PersonResumeDetails {
     jobType: string;
     age: string;
     address: string;
-  }
-  
+}

@@ -1,19 +1,18 @@
-import { Entity, Fields } from "remult"
+import { Entity, Fields } from "remult";
 
 @Entity("resumes", {
-  allowApiCrud: true
+    allowApiCrud: true,
 })
-
 export class Resume {
-  @Fields.cuid()
-  id = crypto.randomUUID();
+    @Fields.cuid()
+    id = crypto.randomUUID();
 
-  @Fields.createdAt()
-  creationTime = new Date()
+    @Fields.createdAt()
+    creationTime = new Date();
 
-  @Fields.string()
-  title = ""
+    @Fields.string()
+    title = "";
 
-  @Fields.string()
-  content = ""
+    @Fields.string()
+    content = "";
 }

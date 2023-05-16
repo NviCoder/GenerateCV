@@ -1,6 +1,6 @@
-import { remultExpress } from "remult/remult-express"
-import { Resume } from "../shared/Resume"
+import { remultExpress } from "remult/remult-express";
+import { Resume } from "../shared/Resume";
 
 export const api = remultExpress({
-  entities: [Resume]
-})
+    entities: [Resume],
+});
