@@ -8,6 +8,28 @@ export const Container = styled.div`
     height: 100%;
 `;
 
+export const ContainerB = styled.div`
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+`;
+
+export const Sidebar = styled.div`
+    width: 10%;
+    background-color: #f0f0f0;
+    padding: 20px;
+`;
+
+export const MainContent = styled.div`
+    width: 90%;
+    flex-grow: 1;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+`;
+
 export const Input = styled.input`
     padding: 10px;
     margin-bottom: 10px;
@@ -69,5 +91,18 @@ export const TextArea = styled.textarea`
         background-color: #e5e5e5;
         color: #7f7f7f;
         border-color: #d1d1d1;
+    }
+`;
+
+export const SidebarItem = styled.div`
+    padding: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+
+    &:hover {
+        background-color: #ddd;
     }
 `;
