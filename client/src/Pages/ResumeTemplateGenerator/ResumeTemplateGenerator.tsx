@@ -14,6 +14,7 @@ import useRemult from "../../Common/useRemult";
 import { getFullName } from "../../Common/commonUtils";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { Resume } from "../../shared/Resume";
 
 function ResumeTemplateGenerator() {
     const {
@@ -37,10 +38,13 @@ function ResumeTemplateGenerator() {
                     <ContainerB>
                         <Sidebar>
                             {resumes?.map((resume) => (
-                                <SidebarItem key={resume.id}>{`${resume.content
-                                    ?.slice(0, 15)
-                                    .split(" ")
-                                    .join(" ")}...`}</SidebarItem>
+                                <SidebarItem
+                                    key={resume.id}
+                                    onClick={() => {
+                                        const re = resumes.find((givenResume: Resume) => resume.id === givenResume.id);
+                                        setResumeText(re?.content || "");
+                                    }}
+                                >{`${resume.content?.slice(0, 15).split(" ").join(" ")}...`}</SidebarItem>
                             ))}
                         </Sidebar>
                         <MainContent>
