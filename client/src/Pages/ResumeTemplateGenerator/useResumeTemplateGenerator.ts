@@ -1,8 +1,9 @@
 import { Configuration, OpenAIApi } from "openai";
 import { PersonResumeDetails } from "./ResumeTemplateGenerator.types";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
+import { Resume } from "../../shared/Resume";
 
 const openAi = new OpenAIApi(
     new Configuration({
@@ -20,11 +21,18 @@ const initialDetails: PersonResumeDetails = {
     address: "123 Main Street, Anytown, USA",
 };
 
-const usePDFGenerator = () => {
+const useResumeTemplateGenerator = (resumes: Resume[] | undefined) => {
     const [personResumeDetails, setPersonResumeDetails] = useState<PersonResumeDetails>(initialDetails);
     const [resumeText, setResumeText] = useState("");
     const [loading, setLoading] = useState(false);
     const [isTextAreaDisabled, setIsTextAreaDisabled] = useState(true);
+    const [activeResume, setActiveResume] = useState<Resume>();
+
+    useEffect(() => {
+        if ((!activeResume && resumes) || (resumes && resumes.some((r) => activeResume?.id === r.id))) {
+            setActiveResume(resumes.at(0));
+        }
+    }, [resumes]);
 
     const getCvContent = async (personResumeDetails: PersonResumeDetails) => {
         const { firstName, lastName, email, phone, jobType, age, address } = personResumeDetails;
@@ -91,11 +99,13 @@ const usePDFGenerator = () => {
         setResumeText,
         generateResumeTemplate,
         showPdf,
+        setActiveResume,
         personResumeDetails,
         resumeText,
         loading,
         isTextAreaDisabled,
+        activeResume,
     };
 };
 
-export default usePDFGenerator;
+export default useResumeTemplateGenerator;

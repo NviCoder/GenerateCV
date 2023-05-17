@@ -1,35 +1,30 @@
-import usePDFGenerator from "./useResumeTemplateGenerator";
+import useResumeTemplateGenerator from "./useResumeTemplateGenerator";
 import Spinner from "../../Common/Sppiner";
-import {
-    Container,
-    Input,
-    TextArea,
-    Button,
-    Sidebar,
-    MainContent,
-    ContainerB,
-    SidebarItem,
-} from "./ResumeTemplateGenerator.styles";
+import { Container, Input, TextArea, Button, Sidebar, MainContent, ContainerB } from "./ResumeTemplateGenerator.styles";
 import useRemult from "../../Common/useRemult";
 import { getFullName } from "../../Common/commonUtils";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Resume } from "../../shared/Resume";
+import SidebarItem from "./SIdebarItem/SidebarItem";
 
 function ResumeTemplateGenerator() {
+    const { addResume, deleteResume, isRemultLoading, resumes } = useRemult();
     const {
         setPersonResumeDetails,
         setIsTextAreaDisabled,
         setResumeText,
         generateResumeTemplate,
         showPdf,
+        setActiveResume,
         personResumeDetails,
         resumeText,
         loading,
         isTextAreaDisabled,
-    } = usePDFGenerator();
-    const { addResume, isRemultLoading, resumes } = useRemult();
+        activeResume,
+    } = useResumeTemplateGenerator(resumes);
 
+    console.log(activeResume);
     return (
         <>
             {(loading || isRemultLoading) && <Spinner backgroundColor='#ccc' />}
@@ -40,22 +35,30 @@ function ResumeTemplateGenerator() {
                             {resumes?.map((resume) => (
                                 <SidebarItem
                                     key={resume.id}
+                                    resume={resume}
+                                    isActive={activeResume?.id === resume?.id}
                                     onClick={() => {
-                                        const re = resumes.find((givenResume: Resume) => resume.id === givenResume.id);
-                                        setResumeText(re?.content || "");
+                                        const currentResume = resumes.find(
+                                            (givenResume: Resume) => resume.id === givenResume.id
+                                        );
+                                        setActiveResume(currentResume);
                                     }}
-                                >{`${resume.content?.slice(0, 15).split(" ").join(" ")}...`}</SidebarItem>
+                                    onDelete={deleteResume}
+                                    setActiveResume = {setActiveResume}
+                                />
                             ))}
                         </Sidebar>
                         <MainContent>
                             <h1>{`${personResumeDetails.firstName} ${personResumeDetails.lastName}'s Resume template`}</h1>
-                            <Button onClick={() => setIsTextAreaDisabled((isDisabled) => !isDisabled)}>{`${
-                                isTextAreaDisabled ? "Edit" : "Finish editing"
-                            }✍️`}</Button>
+                            <Button
+                                onClick={() => {
+                                    setIsTextAreaDisabled((isDisabled) => !isDisabled);
+                                }}
+                            >{`${isTextAreaDisabled ? "Edit" : "Finish editing"}✍️`}</Button>
                             <TextArea
                                 id='text-area'
-                                value={resumeText}
-                                onChange={(e) => setResumeText(e.target.value)}
+                                value={activeResume?.content}
+                                onChange={(e) => setActiveResume({ ...activeResume!, content: e.target.value })}
                                 disabled={isTextAreaDisabled}
                             />
                             <br />

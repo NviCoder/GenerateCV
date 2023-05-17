@@ -16,9 +16,79 @@ export const ContainerB = styled.div`
 
 export const Sidebar = styled.div`
     width: 10%;
-    background-color: #f0f0f0;
+    background-color: #222;
     padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    border-radius: 20px;
+    overflow: hidden;
+    position: relative;
+    z-index: 1;
+
+    &:before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: linear-gradient(to bottom, #222, #111);
+        opacity: 0.8;
+        z-index: -1;
+    }
+
+    @media (max-width: 768px) {
+        width: 100%;
+        border-radius: 0;
+    }
 `;
+
+// export const SidebarItem = styled.div`
+//     display: flex;
+//     align-items: center;
+//     padding: 10px;
+//     font-size: 16px;
+//     font-weight: bold;
+//     color: #eee;
+//     cursor: pointer;
+//     transition: all 0.2s ease-in-out;
+
+//     &:hover {
+//         color: #fff;
+//         transform: translateX(10px);
+//     }
+
+//     &:not(:last-child) {
+//         border-bottom: 1px solid #444;
+//     }
+
+//     &.active {
+//         background-color: #444;
+//         border-radius: 10px;
+//         color: #fff;
+//     }
+
+//     &.active:hover {
+//         transform: none;
+//     }
+
+//     svg {
+//         margin-right: 15px;
+//         color: #bbb;
+//         font-size: 24px;
+//     }
+
+//     &.active svg {
+//         color: #fff;
+//     }
+
+//     @media (max-width: 768px) {
+//         font-size: 14px;
+//         svg {
+//             margin-right: 10px;
+//             font-size: 20px;
+//         }
+//     }
+// `;
 
 export const MainContent = styled.div`
     width: 90%;
@@ -91,18 +161,5 @@ export const TextArea = styled.textarea`
         background-color: #e5e5e5;
         color: #7f7f7f;
         border-color: #d1d1d1;
-    }
-`;
-
-export const SidebarItem = styled.div`
-    padding: 10px;
-    font-size: 16px;
-    font-weight: bold;
-    color: #333;
-    cursor: pointer;
-    transition: background-color 0.2s ease-in-out;
-
-    &:hover {
-        background-color: #ddd;
     }
 `;

@@ -13,6 +13,7 @@ const useRemult = () => {
     useEffect(() => {
         fetchResumes();
     }, []);
+    
 
     const fetchResumes = async () => {
         try {
@@ -38,7 +39,21 @@ const useRemult = () => {
         }
     };
 
-    return { addResume, isRemultLoading, resumes };
+    const deleteResume = async (inputResume: Resume) => {
+        try {
+            setIsRemultLoading(true);
+            await resumesRepo.delete(inputResume);
+            toast.success("The resume was deleted successfully");
+            fetchResumes();
+        } catch (error) {
+            console.error(error);
+            toast.error("An error occurred!");
+        } finally {
+            setIsRemultLoading(false);
+        }
+    };
+
+    return { addResume, deleteResume, isRemultLoading, resumes };
 };
 
 export default useRemult;
