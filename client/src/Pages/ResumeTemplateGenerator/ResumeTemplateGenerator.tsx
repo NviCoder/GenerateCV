@@ -44,7 +44,7 @@ function ResumeTemplateGenerator() {
                                         setActiveResume(currentResume);
                                     }}
                                     onDelete={deleteResume}
-                                    setActiveResume = {setActiveResume}
+                                    setActiveResume={setActiveResume}
                                 />
                             ))}
                         </Sidebar>

@@ -63,7 +63,7 @@ const SidebarItem = ({ resume, isActive, onClick, onDelete, setActiveResume }) =
                     className='delete-icon'
                     onClick={() => {
                         onDelete(resume);
-                        setActiveResume(undefined);
+                        setActiveResume({});
                     }}
                 >
                     <FontAwesomeIcon icon={faTrash} />
