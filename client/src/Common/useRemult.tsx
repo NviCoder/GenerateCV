@@ -7,53 +7,66 @@ remult.apiClient.url = process.env.REACT_APP_SERVER_ENDPOINT;
 const resumesRepo = remult.repo(Resume);
 
 const useRemult = () => {
-    const [isRemultLoading, setIsRemultLoading] = useState(false);
-    const [resumes, setResumes] = useState<Resume[]>();
+  const [isRemultLoading, setIsRemultLoading] = useState(false);
+  const [resumes, setResumes] = useState<Resume[]>();
 
-    useEffect(() => {
-        fetchResumes();
-    }, []);
-    
+  useEffect(() => {
+    fetchResumes();
+  }, []);
 
-    const fetchResumes = async () => {
-        try {
-            const response = await resumesRepo.find();
-            setResumes(response);
-        } catch (error) {
-            console.error(error);
-            toast.error("An error occurred!");
-        }
-    };
+  const fetchResumes = async () => {
+    try {
+      const response = await resumesRepo.find();
+      setResumes(response);
+    } catch (error) {
+      console.error(error);
+      toast.error("An error occurred!");
+    }
+  };
 
-    const addResume = async (titleInput: string, contentInput: string) => {
-        try {
-            setIsRemultLoading(true);
-            await resumesRepo.insert({ title: titleInput, content: contentInput });
-            toast.success("The resume saved successfully");
-            fetchResumes();
-        } catch (error) {
-            console.error(error);
-            toast.error("An error occurred!");
-        } finally {
-            setIsRemultLoading(false);
-        }
-    };
+  const addResume = async (titleInput: string, contentInput: string) => {
+    try {
+      setIsRemultLoading(true);
+      await resumesRepo.insert({ title: titleInput, content: contentInput });
+      toast.success("The resume saved successfully");
+      fetchResumes();
+    } catch (error) {
+      console.error(error);
+      toast.error("An error occurred!");
+    } finally {
+      setIsRemultLoading(false);
+    }
+  };
 
-    const deleteResume = async (inputResume: Resume) => {
-        try {
-            setIsRemultLoading(true);
-            await resumesRepo.delete(inputResume);
-            toast.success("The resume was deleted successfully");
-            fetchResumes();
-        } catch (error) {
-            console.error(error);
-            toast.error("An error occurred!");
-        } finally {
-            setIsRemultLoading(false);
-        }
-    };
+  const deleteResume = async (inputResume: Resume) => {
+    try {
+      setIsRemultLoading(true);
+      await resumesRepo.delete(inputResume);
+      toast.success("The resume was deleted successfully");
+      fetchResumes();
+    } catch (error) {
+      console.error(error);
+      toast.error("An error occurred!");
+    } finally {
+      setIsRemultLoading(false);
+    }
+  };
 
-    return { addResume, deleteResume, isRemultLoading, resumes };
+  const updateResume = async (inputResume: Resume) => {
+    try {
+      setIsRemultLoading(true);
+      await resumesRepo.update(inputResume.id, {...inputResume});
+      toast.success("The resume was updated successfully");
+      fetchResumes();
+    } catch (error) {
+      console.error(error);
+      toast.error("An error occurred!");
+    } finally {
+      setIsRemultLoading(false);
+    }
+  };
+
+  return { addResume, deleteResume, updateResume, isRemultLoading, resumes };
 };
 
 export default useRemult;
