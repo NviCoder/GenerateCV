@@ -31,6 +31,7 @@ function ResumeTemplateGenerator() {
         <>
           <ContainerB>
             <Sidebar>
+              {resumes?.length === 0 && <h5 style={{color: "white"}}>No Resumes...</h5>}
               {resumes
                 ?.sort((a: Resume, b: Resume) => b.creationTime.getTime() - a.creationTime.getTime())
                 .map((resume) => (
@@ -71,17 +72,19 @@ function ResumeTemplateGenerator() {
               <Button onClick={showPdf}>Show me the resume 📝</Button>
               <Button onClick={generateResumeTemplate}>Refresh template 🔄</Button>
               <Button onClick={() => setResumeText("")}>Enter new details 👨‍🎓</Button>
-              <Button
-                onClick={() => {
-                  if (resumeText) {
-                    addResume(getFullName(personResumeDetails.firstName, personResumeDetails.lastName), resumeText);
-                    return;
-                  }
-                  updateResume(activeResume!);
-                }}
-              >
-                Save Resume 💾
-              </Button>
+              {!activeResume && (
+                <Button
+                  onClick={() => {
+                    if (resumeText) {
+                      addResume(getFullName(personResumeDetails.firstName, personResumeDetails.lastName), resumeText);
+                      return;
+                    }
+                    updateResume(activeResume!);
+                  }}
+                >
+                  Save Resume 💾
+                </Button>
+              )}
             </MainContent>
           </ContainerB>
         </>
