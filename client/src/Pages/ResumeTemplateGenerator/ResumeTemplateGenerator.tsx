@@ -24,7 +24,6 @@ function ResumeTemplateGenerator() {
     activeResume,
   } = useResumeTemplateGenerator(resumes);
 
-  console.log(activeResume);
   return (
     <>
       {(loading || isRemultLoading) && <Spinner backgroundColor="#ccc" />}
@@ -32,41 +31,55 @@ function ResumeTemplateGenerator() {
         <>
           <ContainerB>
             <Sidebar>
-              {resumes?.map((resume) => (
-                <SidebarItem
-                  key={resume.id}
-                  resume={resume}
-                  isActive={activeResume?.id === resume?.id}
-                  onClick={() => {
-                    const currentResume = resumes.find((givenResume: Resume) => resume.id === givenResume.id);
-                    setActiveResume(currentResume);
-                  }}
-                  onDelete={deleteResume}
-                  setActiveResume={setActiveResume}
-                />
-              ))}
+              {resumes
+                ?.sort((a: Resume, b: Resume) => b.creationTime.getTime() - a.creationTime.getTime())
+                .map((resume) => (
+                  <SidebarItem
+                    key={resume.id}
+                    resume={resume}
+                    isActive={activeResume?.id === resume?.id}
+                    onClick={() => {
+                      const currentResume = resumes.find((givenResume: Resume) => resume.id === givenResume.id);
+                      setActiveResume(currentResume);
+                    }}
+                    onDelete={deleteResume}
+                    setActiveResume={setActiveResume}
+                  />
+                ))}
             </Sidebar>
             <MainContent>
               <h1>{`${personResumeDetails.firstName} ${personResumeDetails.lastName}'s Resume template`}</h1>
               <Button
                 onClick={() => {
                   setIsTextAreaDisabled((isDisabled) => !isDisabled);
-                  if (!isTextAreaDisabled && activeResume) {
-                    updateResume(activeResume);
-                  }
+                  activeResume && !isTextAreaDisabled && updateResume(activeResume);
                 }}
               >{`${isTextAreaDisabled ? "Edit" : "Finish editing"}✍️`}</Button>
               <TextArea
                 id="text-area"
-                value={activeResume?.content}
-                onChange={(e) => setActiveResume({ ...activeResume!, content: e.target.value })}
+                value={activeResume?.content || resumeText}
+                onChange={(e) => {
+                  if (activeResume) {
+                    setActiveResume({ ...activeResume!, content: e.target.value });
+                    return;
+                  }
+                  resumeText && setResumeText(e.target.value);
+                }}
                 disabled={isTextAreaDisabled}
               />
               <br />
               <Button onClick={showPdf}>Show me the resume 📝</Button>
               <Button onClick={generateResumeTemplate}>Refresh template 🔄</Button>
               <Button onClick={() => setResumeText("")}>Enter new details 👨‍🎓</Button>
-              <Button onClick={() => addResume(getFullName(personResumeDetails.firstName, personResumeDetails.lastName), resumeText)}>
+              <Button
+                onClick={() => {
+                  if (resumeText) {
+                    addResume(getFullName(personResumeDetails.firstName, personResumeDetails.lastName), resumeText);
+                    return;
+                  }
+                  updateResume(activeResume!);
+                }}
+              >
                 Save Resume 💾
               </Button>
             </MainContent>

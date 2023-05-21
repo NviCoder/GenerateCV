@@ -34,6 +34,10 @@ const useResumeTemplateGenerator = (resumes: Resume[] | undefined) => {
     }
   }, [resumes]);
 
+  useEffect(() => {
+    resumeText && setActiveResume(undefined);
+  }, [resumeText]);
+
   const getCvContent = async (personResumeDetails: PersonResumeDetails) => {
     const { firstName, lastName, email, phone, jobType, age, address } = personResumeDetails;
     const request = `Hello, can you please genereate resume based on the following details? 
