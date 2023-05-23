@@ -1,16 +1,5 @@
-import {
-  Container,
-  Title,
-  Form,
-  Input,
-  SubmitButton,
-  ForgotPassword,
-  SignupLink,
-  DocumentImg,
-  SSOButton,
-  GoogleButtonIcon
-} from "./Login.styles";
-
+import { GoogleLogin, CredentialResponse } from '@react-oauth/google';
+import { Container, Title, Form, DocumentImg } from "./Login.styles";
 const IMAGE_SOURCE = "https://cdn-icons-png.flaticon.com/512/3135/3135686.png";
 
 const LoginPage = () => {
@@ -19,18 +8,15 @@ const LoginPage = () => {
       <DocumentImg src={IMAGE_SOURCE} />
       <Title>Welcome Back</Title>
       <Form>
-        <Input type="text" placeholder="Username" />
-        <Input type="password" placeholder="Password" />
-        <SSOButton>
-          <GoogleButtonIcon
-            src={"https://cdn-icons-png.flaticon.com/512/300/300221.png"}
-          />
-          Sign in with Google
-        </SSOButton>
-        <SubmitButton>Sign In</SubmitButton>
-        <ForgotPassword>Forgot Password?</ForgotPassword>
+        <GoogleLogin
+           onSuccess={(response: CredentialResponse) => {
+            console.log(response);
+          }}
+          onError={() => {
+            console.log('Login Failed');
+          }}
+        />
       </Form>
-      <SignupLink>Don't have an account? Sign up</SignupLink>
     </Container>
   );
 };

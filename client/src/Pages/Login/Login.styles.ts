@@ -49,10 +49,7 @@ export const Form = styled.form`
     display: flex;
     flex-direction: column;
     align-items: center;
-    background-color: white;
     padding: 3rem;
-    border-radius: 2rem;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
 `;
 
 export const Input = styled.input`

@@ -1,12 +1,17 @@
 import './App.css';
-// import LoginPage from './Pages/Login/LoginPage';
-import PDFGenerator from './Pages/ResumeTemplateGenerator/ResumeTemplateGenerator';
+import LoginPage from './Pages/Login/LoginPage';
+import { GoogleOAuthProvider } from '@react-oauth/google';
+
+// import PDFGenerator from './Pages/ResumeTemplateGenerator/ResumeTemplateGenerator';
 
 function App() {
   return (
+    
     <div className="App">
-      {/* <LoginPage /> */}
-      <PDFGenerator/>
+      <GoogleOAuthProvider clientId='asdasda'>
+      <LoginPage />
+      {/* <PDFGenerator/> */}
+      </GoogleOAuthProvider>
     </div>
   );
 }
