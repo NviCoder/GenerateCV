@@ -47,21 +47,26 @@ function ResumeTemplateGenerator() {
                 ))}
             </Sidebar>
             <MainContent>
-              <h1>{`${personResumeDetails.firstName} ${personResumeDetails.lastName}'s Resume template`}</h1>
-              <Button
-                onClick={() => {
-                  setIsTextAreaDisabled((isDisabled) => !isDisabled);
-                  activeResume && !isTextAreaDisabled && updateResume(activeResume);
-                }}>{`${isTextAreaDisabled ? "Edit" : "Finish editing"}✍️`}</Button>
-              <TextArea
-                id="text-area"
-                value={activeResume?.content}
-                onChange={(e) => setActiveResume({ ...activeResume!, content: e.target.value })}
-                disabled={isTextAreaDisabled}
-              />
-              <br />
-              <Button onClick={showPdf}>Show me the resume 📝</Button>
-              <Button onClick={() => generateResumeTemplate(true)}>Refresh template 🔄</Button>
+              {resumes && resumes.length > 0 && (
+                <>
+                  <h1>{`${personResumeDetails.firstName} ${personResumeDetails.lastName}'s Resume template`}</h1>
+                  <Button
+                    onClick={() => {
+                      setIsTextAreaDisabled((isDisabled) => !isDisabled);
+                      activeResume && !isTextAreaDisabled && updateResume(activeResume);
+                    }}>{`${isTextAreaDisabled ? "Edit" : "Finish editing"}✍️`}</Button>
+
+                  <TextArea
+                    id="text-area"
+                    value={activeResume?.content}
+                    onChange={(e) => setActiveResume({ ...activeResume!, content: e.target.value })}
+                    disabled={isTextAreaDisabled}
+                  />
+                  <br />
+                  <Button onClick={showPdf}>Show me the resume 📝</Button>
+                  <Button onClick={() => generateResumeTemplate(true)}>Refresh template 🔄</Button>
+                </>
+              )}
               <Button onClick={() => setActiveResume(undefined)}>Enter new details 👨‍🎓</Button>
             </MainContent>
           </ContainerB>
