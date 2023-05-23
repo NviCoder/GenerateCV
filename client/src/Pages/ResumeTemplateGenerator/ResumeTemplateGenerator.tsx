@@ -1,37 +1,35 @@
 import useResumeTemplateGenerator from "./useResumeTemplateGenerator";
 import Spinner from "../../Common/Sppiner";
 import { Container, Input, TextArea, Button, Sidebar, MainContent, ContainerB } from "./ResumeTemplateGenerator.styles";
-import useRemult from "../../Common/useRemult";
-import { getFullName } from "../../Common/commonUtils";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Resume } from "../../shared/Resume";
 import SidebarItem from "./SIdebarItem/SidebarItem";
 
 function ResumeTemplateGenerator() {
-  const { addResume, deleteResume, updateResume, isRemultLoading, resumes } = useRemult();
   const {
     setPersonResumeDetails,
     setIsTextAreaDisabled,
-    setResumeText,
     generateResumeTemplate,
     showPdf,
     setActiveResume,
+    updateResume,
+    deleteResume,
     personResumeDetails,
-    resumeText,
     loading,
     isTextAreaDisabled,
     activeResume,
-  } = useResumeTemplateGenerator(resumes);
+    resumes,
+  } = useResumeTemplateGenerator();
 
   return (
     <>
-      {(loading || isRemultLoading) && <Spinner backgroundColor="#ccc" />}
-      {resumeText ? (
+      {loading && <Spinner backgroundColor="#ccc" />}
+      {activeResume ? (
         <>
           <ContainerB>
             <Sidebar>
-              {resumes?.length === 0 && <h5 style={{color: "white"}}>No Resumes...</h5>}
+              {resumes?.length === 0 && <h5 style={{ color: "white" }}>No Resumes...</h5>}
               {resumes
                 ?.sort((a: Resume, b: Resume) => b.creationTime.getTime() - a.creationTime.getTime())
                 .map((resume) => (
@@ -54,37 +52,17 @@ function ResumeTemplateGenerator() {
                 onClick={() => {
                   setIsTextAreaDisabled((isDisabled) => !isDisabled);
                   activeResume && !isTextAreaDisabled && updateResume(activeResume);
-                }}
-              >{`${isTextAreaDisabled ? "Edit" : "Finish editing"}✍️`}</Button>
+                }}>{`${isTextAreaDisabled ? "Edit" : "Finish editing"}✍️`}</Button>
               <TextArea
                 id="text-area"
-                value={activeResume?.content || resumeText}
-                onChange={(e) => {
-                  if (activeResume) {
-                    setActiveResume({ ...activeResume!, content: e.target.value });
-                    return;
-                  }
-                  resumeText && setResumeText(e.target.value);
-                }}
+                value={activeResume?.content}
+                onChange={(e) => setActiveResume({ ...activeResume!, content: e.target.value })}
                 disabled={isTextAreaDisabled}
               />
               <br />
               <Button onClick={showPdf}>Show me the resume 📝</Button>
-              <Button onClick={generateResumeTemplate}>Refresh template 🔄</Button>
-              <Button onClick={() => setResumeText("")}>Enter new details 👨‍🎓</Button>
-              {!activeResume && (
-                <Button
-                  onClick={() => {
-                    if (resumeText) {
-                      addResume(getFullName(personResumeDetails.firstName, personResumeDetails.lastName), resumeText);
-                      return;
-                    }
-                    updateResume(activeResume!);
-                  }}
-                >
-                  Save Resume 💾
-                </Button>
-              )}
+              <Button onClick={() => generateResumeTemplate(true)}>Refresh template 🔄</Button>
+              <Button onClick={() => setActiveResume(undefined)}>Enter new details 👨‍🎓</Button>
             </MainContent>
           </ContainerB>
         </>
@@ -169,7 +147,7 @@ function ResumeTemplateGenerator() {
                 })
               }
             />
-            <Button onClick={generateResumeTemplate}>Generate Resume template 📝</Button>
+            <Button onClick={() => generateResumeTemplate()}>Generate Resume template 📝</Button>
           </Container>
         </>
       )}

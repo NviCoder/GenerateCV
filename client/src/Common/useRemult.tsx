@@ -25,17 +25,19 @@ const useRemult = () => {
   };
 
   const addResume = async (titleInput: string, contentInput: string) => {
+    let newResume = undefined;
     try {
       setIsRemultLoading(true);
-      await resumesRepo.insert({ title: titleInput, content: contentInput });
-      toast.success("The resume saved successfully");
+      const response = await resumesRepo.insert({ title: titleInput, content: contentInput });
       fetchResumes();
+      newResume = response;
     } catch (error) {
       console.error(error);
       toast.error("An error occurred!");
     } finally {
       setIsRemultLoading(false);
     }
+    return newResume;
   };
 
   const deleteResume = async (inputResume: Resume) => {
@@ -55,7 +57,7 @@ const useRemult = () => {
   const updateResume = async (inputResume: Resume) => {
     try {
       setIsRemultLoading(true);
-      await resumesRepo.update(inputResume.id, {...inputResume});
+      await resumesRepo.update(inputResume.id, { ...inputResume });
       toast.success("The resume was updated successfully");
       fetchResumes();
     } catch (error) {

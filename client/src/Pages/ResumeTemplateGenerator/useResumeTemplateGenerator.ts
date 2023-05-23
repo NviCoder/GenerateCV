@@ -1,9 +1,11 @@
 import { Configuration, OpenAIApi } from "openai";
 import { PersonResumeDetails } from "./ResumeTemplateGenerator.types";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
 import { Resume } from "../../shared/Resume";
+import useRemult from "../../Common/useRemult";
+import { getFullName } from "../../Common/commonUtils";
 
 const openAi = new OpenAIApi(
   new Configuration({
@@ -21,22 +23,13 @@ const initialDetails: PersonResumeDetails = {
   address: "123 Main Street, Anytown, USA",
 };
 
-const useResumeTemplateGenerator = (resumes: Resume[] | undefined) => {
+const useResumeTemplateGenerator = () => {
   const [personResumeDetails, setPersonResumeDetails] = useState<PersonResumeDetails>(initialDetails);
-  const [resumeText, setResumeText] = useState("");
   const [loading, setLoading] = useState(false);
   const [isTextAreaDisabled, setIsTextAreaDisabled] = useState(true);
   const [activeResume, setActiveResume] = useState<Resume>();
 
-  useEffect(() => {
-    if ((!activeResume && resumes) || (resumes && resumes.every((r) => activeResume?.id !== r.id))) {
-      setActiveResume(resumes.at(0));
-    }
-  }, [resumes]);
-
-  useEffect(() => {
-    resumeText && setActiveResume(undefined);
-  }, [resumeText]);
+  const { addResume, resumes, deleteResume, updateResume } = useRemult();
 
   const getCvContent = async (personResumeDetails: PersonResumeDetails) => {
     const { firstName, lastName, email, phone, jobType, age, address } = personResumeDetails;
@@ -56,21 +49,33 @@ const useResumeTemplateGenerator = (resumes: Resume[] | undefined) => {
   };
 
   const getResumeTemplateContent = async () => {
-    setLoading(true);
     let response;
     try {
       response = await getCvContent(personResumeDetails);
     } catch (error) {
       console.error(error);
-    } finally {
-      setLoading(false);
     }
     return response || "Error was occured";
   };
 
-  const generateResumeTemplate = async () => {
-    const response = await getResumeTemplateContent();
-    setResumeText(response);
+  const generateResumeTemplate = async (isRefresh: boolean = false) => {
+    setLoading(true);
+    try {
+      const openAiResponse = await getResumeTemplateContent();
+      const title = getFullName(personResumeDetails.firstName, personResumeDetails.lastName);
+      if (!isRefresh) {
+        const response = await addResume(title, openAiResponse);
+        response && setActiveResume(response);
+        return;
+      }
+      const newResume = { ...activeResume!, content: openAiResponse };
+      await updateResume({ ...activeResume!, content: openAiResponse });
+      setActiveResume(newResume);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const showPdf = () => {
@@ -89,7 +94,7 @@ const useResumeTemplateGenerator = (resumes: Resume[] | undefined) => {
     doc.setFontSize(14);
     doc.setTextColor(0, 0, 0);
     doc.setFont("bold");
-    doc.text(resumeText || "No data?", 20, 80);
+    doc.text(activeResume?.content || "No data?", 20, 80);
 
     const pdfData = doc.output();
     const pdfBlob = new Blob([pdfData], { type: "application/pdf" });
@@ -100,15 +105,16 @@ const useResumeTemplateGenerator = (resumes: Resume[] | undefined) => {
   return {
     setPersonResumeDetails,
     setIsTextAreaDisabled,
-    setResumeText,
     generateResumeTemplate,
     showPdf,
     setActiveResume,
+    updateResume,
+    deleteResume,
     personResumeDetails,
-    resumeText,
     loading,
     isTextAreaDisabled,
     activeResume,
+    resumes,
   };
 };
 
